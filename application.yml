@@ -14,4 +14,4 @@ server:
 spring:
   profiles: prod # 生产环境
   application:
-  name: microservice-config-prod
+    name: microservice-config-prod
