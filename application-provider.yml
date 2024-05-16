@@ -1,0 +1,60 @@
+spring:
+  profiles:
+    active: dev
+---
+server:
+  port: 30081
+spring:
+  profiles: dev
+  application:
+    name: provider-config-hystrix
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/mengxuegu-db01?serverTimezone=GMT%2B8
+    username: root
+    password: root
+eureka:
+  instance: #实例
+    instance-id: ${spring.application.name}:${server.port} #指定实例ID 注册示例名称
+    prefer-ip-address: true #访问路径可以显示IP地址
+  client:
+    register-with-eureka: true # 服务注册，false表示不将自已注册到Eureka服务中
+    fetch-registry: true # 服务发现，false表示自己不从Eureka服务中获取注册信息
+    service-url: # Eureka客户端与Eureka服务端的交互地址，集群版配置对方的地址，单机版配置自己（如果不配置则默认本机8761端口）
+      defaultZone: http://eureka36001.com:30061/eureka
+
+# 在被监控服务上添加暴露端点
+#访问：localhost:30082/actuator/hystrix.stream
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+---
+server:
+  port: 30082
+spring:
+  profiles: prod
+  application:
+    name: provider-config-hystrix
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/mengxuegu-db01?serverTimezone=GMT%2B8
+    username: root
+    password: root
+eureka:
+  instance: #实例
+    instance-id: ${spring.application.name}:${server.port} #指定实例ID 注册示例名称
+    prefer-ip-address: true #访问路径可以显示IP地址
+  client:
+    register-with-eureka: true # 服务注册，false表示不将自已注册到Eureka服务中
+    fetch-registry: true # 服务发现，false表示自己不从Eureka服务中获取注册信息
+    service-url: # Eureka客户端与Eureka服务端的交互地址，集群版配置对方的地址，单机版配置自己（如果不配置则默认本机8761端口）
+      defaultZone: http://eureka36002.com:30062/eureka
+# 在被监控服务上添加暴露端点
+#访问：localhost:30082/actuator/hystrix.stream
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream

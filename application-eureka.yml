@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: dev
+---
+server:
+  port: 30061
+spring:
+  profiles: dev
+eureka:
+  instance:
+    instance-id: eureka36001.com # eureka服务端的实例名称
+  client:
+    register-with-eureka: false # 服务注册，false表示不将自已注册到Eureka服务中
+    fetch-registry: false # 服务发现，false表示自己不从Eureka服务中获取注册信息
+    service-url: # Eureka客户端与Eureka服务端的交互地址，集群版配置对方的地址，单机版配置自己（如果不配置则默认本机8761端口）
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    server:
+      enable-self-preservation: false # 禁用自我保护机制 生产环境建议打开
+---
+server:
+  port: 30062
+spring:
+  profiles: prod
+eureka:
+  instance:
+    instance-id: eureka36002.com # eureka服务端的实例名称
+  client:
+    register-with-eureka: false # 服务注册，false表示不将自已注册到Eureka服务中
+    fetch-registry: false # 服务发现，false表示自己不从Eureka服务中获取注册信息
+    service-url: # Eureka客户端与Eureka服务端的交互地址，集群版配置对方的地址，单机版配置自己（如果不配置则默认本机8761端口）
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    server:
+      enable-self-preservation: true # 开始自我保护机制：在一定时间内检测不到客户端的心跳不会删除服务
